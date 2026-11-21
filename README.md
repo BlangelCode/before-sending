@@ -1,26 +1,26 @@
 # Antes de enviar
 
-**Antes de enviar** es el concepto de una aplicación web que ayuda a las personas a revisar y reducir la información sensible que comparten con herramientas de inteligencia artificial, enviar mensajes extensos a empresas o públicar algún contenido extenso en redes sociales. El análisis del texto está diseñado para ejecutarse en el navegador, sin enviarlo a una API de IA ni al backend.
+**Antes de enviar** es una aplicación web para revisar posibles datos sensibles antes de compartir texto con herramientas de inteligencia artificial, enviarlo a una empresa o publicarlo en redes sociales. El análisis se ejecuta en el navegador; el texto no se envía al backend ni a una API de IA.
 
-> **Estado:** documentación y estructura inicial. Los archivos de la aplicación están vacíos; el producto todavía no está implementado.
+> **Estado:** MVP frontend de una sola página. La detección es orientativa y no garantiza anonimización completa.
 
 ## Problema y objetivo
 
-Al pedirle ayuda a una IA, una persona puede pegar por accidente datos personales, laborales o de otra persona. Antes de enviar busca dar control al usuario: mostrar posibles datos sensibles, explicar por qué se marcaron y permitir ocultarlos, reemplazarlos o generalizarlos antes de copiar el texto protegido.
+Al pedirle ayuda a una IA, enviar un mensaje o publicar en redes, una persona puede incluir accidentalmente datos propios o de terceros. Antes de enviar muestra tipos de posibles datos sensibles y permite reemplazarlos antes de copiar el texto protegido.
 
 El proyecto se plantea como una herramienta educativa de privacidad, no como una garantía de anonimización.
 
-## Funcionalidades previstas
+## Funcionalidades del MVP
 
-- Revisar texto en el navegador con reglas locales deterministas.
-- Señalar patrones comunes, por ejemplo correos, algunos formatos de teléfono y valores junto a etiquetas como “contraseña” o “token”.
-- Permitir que el usuario seleccione manualmente nombres, direcciones u otros fragmentos que las reglas no puedan reconocer con seguridad.
-- Ocultar, reemplazar por etiquetas o generalizar los fragmentos seleccionados.
-- Copiar el texto protegido para utilizarlo en la herramienta de IA elegida por el usuario.
-- En una etapa posterior, revisar una respuesta pegada desde una IA y restaurar localmente algunas etiquetas cuando sea necesario.
-- Ofrecer plantillas de preparación de prompts y una experiencia PWA instalable en navegadores compatibles.
+- Escribir o pegar texto, o cargar un ejemplo ficticio para probar la aplicación.
+- Detectar posibles correos electrónicos y números de teléfono con reglas locales de JavaScript.
+- Seleccionar manualmente otro fragmento dentro del texto y añadirlo como posible dato sensible.
+- Revisar y desmarcar los hallazgos que se quieran conservar.
+- Reemplazar los fragmentos seleccionados con etiquetas como `[CORREO_1]`, `[TELEFONO_1]` y `[DATO_1]`.
+- Revisar y copiar el resultado protegido, o limpiar el texto y los hallazgos de la página.
+- Instalar la PWA y abrir su estructura estática sin conexión en navegadores compatibles.
 
-Estas son funcionalidades previstas; todavía no están implementadas.
+La interfaz presenta los resultados como posibles datos sensibles. Las reglas pueden pasar por alto valores o marcar números que no sean teléfonos; la persona debe revisar el resultado antes de compartirlo.
 
 ## Tecnologías y por qué
 
@@ -29,8 +29,8 @@ Estas son funcionalidades previstas; todavía no están implementadas.
 | HTML | Estructura semántica y accesible de la interfaz. |
 | CSS | Presentación adaptable a móvil y escritorio, sin imponer un framework visual. |
 | JavaScript nativo | Interacciones, selección de fragmentos, reglas de detección y sustitución local. |
-| Python + FastAPI | Backend mínimo para servir la aplicación y ofrecer operaciones no sensibles, como una comprobación de salud. |
-| PWA | Permitir abrir la aplicación por enlace e instalarla desde navegadores compatibles; el soporte offline se añadirá al implementar el service worker. |
+| Python + FastAPI | Backend planeado para futuras operaciones no sensibles. No forma parte del MVP y no recibe texto. |
+| Manifiesto y service worker | Describir la PWA y cachear únicamente los recursos estáticos para que la interfaz pueda abrirse sin conexión. |
 
 Se elige HTML, CSS y JavaScript nativo en vez de añadir un framework de frontend para mantener el MVP ligero y reducir dependencias. HTML y CSS por sí solos no pueden realizar el análisis interactivo; JavaScript es necesario para leer el texto en la página, detectar patrones y aplicar cambios.
 
@@ -43,20 +43,22 @@ Navegador
   │   ├─ css/styles.css
   │   ├─ js/app.js
   │   ├─ manifest.webmanifest
-  │   └─ service-worker.js
+  │   ├─ service-worker.js
+  │   └─ assets/icon.svg
   └─ Analiza y transforma el texto localmente
 
-Servidor FastAPI
-  ├─ backend/app/main.py
-  ├─ Sirve la aplicación y recursos estáticos
-  └─ Expone funciones no sensibles (por ejemplo, health check)
+Servidor estático HTTPS
+  └─ Entrega los archivos de la PWA; no recibe el texto del editor
+
+FastAPI
+  └─ Planeado, pero no utilizado por el MVP
 ```
 
-El texto introducido, los hallazgos y el mapa temporal usado para reemplazar/restaurar etiquetas deben permanecer en el navegador. FastAPI no debe recibirlos, guardarlos ni registrarlos. Para el MVP no se prevé base de datos, cuentas de usuario ni llamadas a modelos de IA.
+El texto, los hallazgos y los reemplazos se procesan en memoria en la página. El frontend no realiza peticiones para analizar el texto ni persiste un historial. El service worker guarda recursos de la aplicación, no el contenido del editor. FastAPI permanece sin implementar y no hay base de datos ni cuentas.
 
 ## Detección local y límites
 
-La primera versión utilizará reglas de JavaScript —principalmente patrones de texto y reglas de contexto—, no un modelo de IA. El usuario revisará cada hallazgo antes de aplicar cambios. La detección automática de nombres, direcciones e identificadores nacionales es difícil de hacer de forma fiable para todos los idiomas y países; por ello debe existir selección manual y no se debe afirmar que el texto quedó completamente anonimizado.
+La detección automática implementada utiliza patrones de JavaScript para correos electrónicos y posibles teléfonos; no usa un modelo de IA. Otros fragmentos se pueden seleccionar manualmente. Los números de teléfono pueden confundirse con fechas o identificadores, y otros formatos internacionales pueden no detectarse. Nombres, direcciones e identificadores no se identifican automáticamente.
 
 La aplicación debe indicar con claridad que:
 
@@ -76,6 +78,8 @@ frontend/
     app.js
   manifest.webmanifest
   service-worker.js
+  assets/
+    icon.svg
 
 backend/
   app/
@@ -87,21 +91,26 @@ evohacks-2-copilot/
     memory.md
 ```
 
-Los archivos de frontend y backend se han creado vacíos intencionalmente. No contienen todavía lógica ni configuración ejecutable.
+`backend/app/main.py` y `backend/requirements.txt` se mantienen vacíos: el MVP no necesita servidor para procesar texto.
 
 ## Empaquetado y ejecución previstos
 
-La entrega objetivo es una PWA disponible mediante un enlace HTTPS para facilitar que participantes y jueces de distintos lugares la prueben sin instalar un programa de escritorio. FastAPI puede servir el frontend y el endpoint de salud bajo el mismo origen; alternativamente, el frontend podría alojarse como sitio estático y el backend desplegarse por separado, siempre que el navegador no envíe texto sensible.
+La PWA se puede probar con un servidor estático local y desplegar como sitio HTTPS para que otras personas la abran mediante un enlace. En Windows, desde PowerShell:
 
-La instalación de una PWA y el service worker requieren un contexto seguro (normalmente HTTPS; `localhost` se permite para desarrollo). El manifiesto y el service worker están solo como archivos vacíos; todavía no habilitan instalación ni uso offline.
+```powershell
+Set-Location frontend
+python -m http.server 8000
+```
+
+Abre `http://localhost:8000`. Para instalar la PWA desde un sitio publicado se necesita HTTPS y un navegador compatible. El service worker cachea el shell estático, no el texto escrito.
 
 ## Privacidad y seguridad del producto
 
 - No integrar una API externa de IA para leer el texto.
-- No enviar texto o fragmentos detectados a FastAPI.
-- No persistir texto ni historial por defecto.
-- Mantener cualquier relación temporal entre valores originales y etiquetas solo en memoria del navegador y ofrecer borrado explícito.
-- No prometer detección exhaustiva ni protección absoluta.
+- El frontend no envía texto ni hallazgos a FastAPI; el backend no participa en el MVP.
+- No guardar el texto en almacenamiento local ni crear historial.
+- La acción «Limpiar» borra el contenido del editor, la lista de hallazgos y el resultado de la página.
+- No prometer detección exhaustiva ni protección absoluta; revisar el resultado antes de compartirlo.
 
 ## Contexto de la hackatón
 

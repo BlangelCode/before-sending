@@ -1,0 +1,19 @@
+{
+  "name": "Antes de enviar",
+  "short_name": "Antes de enviar",
+  "description": "Revisa y protege posibles datos sensibles antes de compartir un texto.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f2",
+  "theme_color": "#153d3a",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

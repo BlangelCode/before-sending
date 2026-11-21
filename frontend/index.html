@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#153d3a">
+    <meta
+      name="description"
+      content="Revisa y protege posibles datos sensibles antes de compartir un texto."
+    >
+    <title>Antes de enviar</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="./js/app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Antes de enviar, inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 3.5 26 7v7.4c0 6.5-4 11.6-10 14.1-6-2.5-10-7.6-10-14.1V7l10-3.5Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="m11.5 15.8 3 3 6-6.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>Antes de enviar</span>
+      </a>
+      <span class="local-badge">
+        <span class="status-dot" aria-hidden="true"></span>
+        Análisis en este dispositivo
+      </span>
+    </header>
+
+    <main class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Una pausa antes de compartir</p>
+        <h1 id="page-title">Tu texto. <span>Tu decisión.</span></h1>
+        <p class="intro-copy">
+          Revisa posibles datos personales y decide qué quieres proteger antes
+          de compartir un mensaje, una publicación o una consulta con una IA.
+        </p>
+      </section>
+
+      <section class="privacy-note" aria-label="Nota de privacidad">
+        <span class="privacy-icon" aria-hidden="true">i</span>
+        <p>
+          El análisis se realiza en esta página. El texto no se envía a un
+          servidor ni se guarda en un historial. Los resultados son orientativos:
+          revísalos antes de compartir.
+        </p>
+      </section>
+
+      <section class="workspace" aria-label="Herramienta de revisión">
+        <article class="panel editor-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="step-label"><span>1</span> TU TEXTO</p>
+              <h2>¿Qué vas a compartir?</h2>
+            </div>
+            <button class="text-button" id="sampleButton" type="button">
+              Probar ejemplo
+            </button>
+          </div>
+
+          <label class="sr-only" for="sourceText">Texto que quieres revisar</label>
+          <textarea
+            id="sourceText"
+            class="text-input"
+            rows="11"
+            placeholder="Pega o escribe aquí el texto que quieres revisar..."
+            spellcheck="false"
+          ></textarea>
+
+          <div class="editor-footer">
+            <span id="characterCount">0 caracteres</span>
+            <button class="text-button clear-button" id="clearButton" type="button">
+              Limpiar
+            </button>
+          </div>
+
+          <div class="editor-actions">
+            <button class="primary-button" id="analyzeButton" type="button">
+              Revisar texto
+              <span aria-hidden="true">→</span>
+            </button>
+            <p>Detecta correos y posibles números de teléfono.</p>
+          </div>
+        </article>
+
+        <article class="panel findings-panel" aria-labelledby="findingsTitle">
+          <div class="panel-heading findings-heading">
+            <div>
+              <p class="step-label"><span>2</span> REVISA</p>
+              <h2 id="findingsTitle">Posibles datos</h2>
+            </div>
+            <span class="count-badge" id="findingCount">0</span>
+          </div>
+
+          <p class="panel-description">
+            Elige qué fragmentos quieres reemplazar. Puedes desmarcar los que
+            quieras conservar.
+          </p>
+
+          <div class="empty-state" id="emptyFindings">
+            <span class="empty-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none">
+                <path d="M24 5 39 11v11c0 9-6 16-15 20C15 38 9 31 9 22V11l15-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M18 24h12M24 18v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <p class="empty-title">Aquí aparecerán los hallazgos</p>
+            <p>Revisa un texto para empezar.</p>
+          </div>
+          <ul class="finding-list" id="findingList" aria-label="Hallazgos detectados"></ul>
+
+          <div class="manual-note">
+            <p>
+              ¿Ves otro dato? Selecciónalo en el texto y podrás añadirlo
+              manualmente.
+            </p>
+            <button class="secondary-button" id="addSelectionButton" type="button" disabled>
+              + Proteger selección
+            </button>
+            <button class="primary-button protect-button" id="protectButton" type="button" disabled>
+              Proteger los marcados
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <section class="result-section" id="resultSection" aria-labelledby="resultTitle" hidden>
+        <div class="result-heading">
+          <div>
+            <p class="step-label"><span>3</span> TEXTO PROTEGIDO</p>
+            <h2 id="resultTitle">Revísalo antes de copiar</h2>
+          </div>
+          <span class="protected-badge">
+            <span aria-hidden="true">✓</span> Cambios aplicados
+          </span>
+        </div>
+        <label class="sr-only" for="protectedText">Texto con los datos reemplazados</label>
+        <textarea id="protectedText" class="text-input result-input" rows="7" readonly></textarea>
+        <div class="result-footer">
+          <p id="replacementSummary"></p>
+          <button class="primary-button copy-button" id="copyButton" type="button">
+            Copiar texto
+            <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="page-message" id="pageMessage" role="status" aria-live="polite"></div>
+      <p class="disclaimer">
+        Ningún detector encuentra todo. Comprueba el texto y la política del
+        servicio al que lo enviarás.
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <span>Antes de enviar</span>
+      <span>Una herramienta de apoyo, no una garantía de anonimización.</span>
+    </footer>
+
+    <noscript>
+      <p class="noscript-message">Activa JavaScript para revisar y proteger el texto en esta página.</p>
+    </noscript>
+  </body>
+</html>
