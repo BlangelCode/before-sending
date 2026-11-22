@@ -1,9 +1,19 @@
-const CACHE_NAME = "antes-de-enviar-static-v7";
+const CACHE_NAME = "antes-de-enviar-static-v10";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./css/styles.css",
+  "./css/foundation.css",
+  "./css/layout.css",
+  "./css/editor.css",
+  "./css/findings.css",
+  "./css/feedback.css",
+  "./css/responsive.css",
+  "./css/theme.css",
   "./js/app.js",
+  "./js/config.js",
+  "./js/detection.js",
+  "./js/findings-view.js",
+  "./js/translations.js",
   "./manifest.webmanifest",
   "./assets/icon.svg",
 ];

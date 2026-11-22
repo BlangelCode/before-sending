@@ -1,23 +1,33 @@
 <!doctype html>
-<html lang="es">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#44206d">
     <meta
       name="description"
-      content="Revisa y protege posibles datos sensibles antes de compartir un texto."
+      content="Review and protect possible sensitive data before sharing text."
     >
     <title>Antes de enviar</title>
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/foundation.css">
+    <link rel="stylesheet" href="./css/layout.css">
+    <link rel="stylesheet" href="./css/editor.css">
+    <link rel="stylesheet" href="./css/findings.css">
+    <link rel="stylesheet" href="./css/feedback.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+    <link rel="stylesheet" href="./css/theme.css">
+    <script src="./js/translations.js" defer></script>
+    <script src="./js/config.js" defer></script>
+    <script src="./js/detection.js" defer></script>
+    <script src="./js/findings-view.js" defer></script>
     <script src="./js/app.js" defer></script>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <a class="skip-link" href="#main-content" data-i18n="skipLink">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="./" aria-label="Antes de enviar, inicio">
+      <a class="brand" href="./" data-i18n-aria-label="brandAria">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 32 32" fill="none">
             <path d="M16 3.5 26 7v7.4c0 6.5-4 11.6-10 14.1-6-2.5-10-7.6-10-14.1V7l10-3.5Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
@@ -26,85 +36,86 @@
         </span>
         <span>Antes de enviar</span>
       </a>
-      <span class="privacy-status" role="status">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 3 19 6v5.5c0 4.5-2.8 7.8-7 9.5-4.2-1.7-7-5-7-9.5V6l7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span><strong>Privacidad local</strong><small>El texto se analiza aquí</small></span>
-      </span>
+      <div class="header-controls">
+        <span class="privacy-status" role="status">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3 19 6v5.5c0 4.5-2.8 7.8-7 9.5-4.2-1.7-7-5-7-9.5V6l7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span><strong data-i18n="privacyTitle">Privacy stays local</strong><small data-i18n="privacyDetail">Text is analyzed here</small></span>
+        </span>
+        <button class="header-control" id="languageToggle" type="button" data-i18n="languageButton" data-i18n-aria-label="languageButtonAria">Español</button>
+        <button class="header-control" id="themeToggle" type="button" data-i18n="themeDarkButton" data-i18n-aria-label="themeButtonAria">Dark mode</button>
+      </div>
     </header>
 
     <main class="page-shell" id="main-content" tabindex="-1">
       <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">Una pausa antes de compartir</p>
-        <h1 id="page-title">Tu texto. <span>Tu decisión.</span></h1>
-        <p class="intro-copy">
-          Revisa posibles datos personales y decide qué quieres proteger antes
-          de compartir un mensaje, una publicación o una consulta con una IA.
+        <p class="eyebrow" data-i18n="introEyebrow">Pause before you share</p>
+        <h1 id="page-title"><span data-i18n="introTitleFirst">Your text.</span> <span data-i18n="introTitleSecond">Your choice.</span></h1>
+        <p class="intro-copy" data-i18n="introCopy">
+          Review possible personal data and decide what to protect before sharing a message, a post, or a prompt with AI.
         </p>
       </section>
 
-      <section class="privacy-note" aria-label="Nota de privacidad">
+      <section class="privacy-note" data-i18n-aria-label="privacyNoteAria">
         <span class="privacy-icon" aria-hidden="true">i</span>
-        <p>
-          El análisis se realiza en esta página. El texto no se envía a un
-          servidor ni se guarda en un historial. Los resultados son orientativos:
-          revísalos antes de compartir.
+        <p data-i18n="privacyNote">
+          Analysis runs on this page. Text is not sent to a server or saved in a history. Results are suggestions: review them before sharing.
         </p>
       </section>
 
-      <section class="workspace" aria-label="Herramienta de revisión">
+      <section class="workspace" data-i18n-aria-label="workspaceAria">
         <article class="panel editor-panel">
           <div class="panel-heading">
             <div>
-              <p class="step-label"><span>1</span> TU TEXTO</p>
-              <h2>¿Qué vas a compartir?</h2>
+              <p class="step-label"><span>1</span> <span data-i18n="stepText">YOUR TEXT</span></p>
+              <h2 data-i18n="editorTitle">What are you going to share?</h2>
             </div>
             <button class="text-button" id="sampleButton" type="button">
-              Probar ejemplo
+              <span data-i18n="sampleButton">Try an example</span>
             </button>
           </div>
 
-          <label class="sr-only" for="sourceText">Texto que quieres revisar</label>
+          <label class="sr-only" for="sourceText" data-i18n="sourceLabel">Text you want to review</label>
           <textarea
             id="sourceText"
             name="sourceText"
             class="text-input"
             rows="11"
             autocomplete="off"
-            placeholder="Ejemplo: «Mi correo es ana@ejemplo.com…»"
+            data-i18n-placeholder="sourcePlaceholder"
+            placeholder="Example: “My email is alex@example.com…”"
             spellcheck="false"
           ></textarea>
 
           <div class="editor-footer">
-            <span id="characterCount">0 caracteres</span>
+            <span id="characterCount">0 characters</span>
             <button class="text-button clear-button" id="clearButton" type="button">
-              Borrar texto
+              <span data-i18n="clearButton">Clear text</span>
             </button>
           </div>
 
           <div class="editor-actions">
             <button class="primary-button" id="analyzeButton" type="button">
-              Revisar texto
+              <span data-i18n="analyzeButton">Review text</span>
               <span aria-hidden="true">→</span>
             </button>
-            <p>Busca identificaciones, teléfonos, correos, datos financieros y direcciones.</p>
+            <p data-i18n="editorHelp">Looks for IDs, names, phones, email, financial data, and addresses.</p>
           </div>
         </article>
 
         <article class="panel findings-panel" aria-labelledby="findingsTitle">
           <div class="panel-heading findings-heading">
             <div>
-              <p class="step-label"><span>2</span> REVISA</p>
-              <h2 id="findingsTitle">Posibles datos</h2>
+              <p class="step-label"><span>2</span> <span data-i18n="stepReview">REVIEW</span></p>
+              <h2 id="findingsTitle" data-i18n="findingsTitle">Possible sensitive data</h2>
             </div>
             <span class="count-badge" id="findingCount">0</span>
           </div>
 
-          <p class="panel-description">
-            Elige qué fragmentos quieres reemplazar. Puedes desmarcar los que
-            quieras conservar.
+          <p class="panel-description" data-i18n="findingsDescription">
+            Choose the fragments you want to replace. Uncheck any you want to keep.
           </p>
 
           <div class="empty-state" id="emptyFindings">
@@ -114,28 +125,25 @@
                 <path d="M18 24h12M24 18v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </span>
-            <p class="empty-title">Aquí aparecerán los hallazgos</p>
-            <p>Revisa un texto para empezar.</p>
+            <p class="empty-title" data-i18n="emptyTitle">Findings will appear here</p>
+            <p data-i18n="emptyHelp">Review some text to get started.</p>
           </div>
           <div
             class="category-tabs"
             id="categoryTabs"
             role="tablist"
-            aria-label="Categorías de datos detectados"
+            data-i18n-aria-label="categoriesAria"
             hidden
           ></div>
-          <div class="finding-groups" id="findingGroups" aria-label="Hallazgos agrupados por tipo"></div>
+          <div class="finding-groups" id="findingGroups" data-i18n-aria-label="groupedFindingsAria"></div>
 
           <div class="manual-note">
-            <p>
-              ¿Ves otro dato? Selecciónalo en el texto y podrás añadirlo
-              manualmente.
-            </p>
+            <p data-i18n="manualNote">See another sensitive detail? Select it in the text to add it manually.</p>
             <button class="secondary-button" id="addSelectionButton" type="button" disabled>
-              + Proteger selección
+              <span data-i18n="addSelection">+ Protect selection</span>
             </button>
             <button class="primary-button protect-button" id="protectButton" type="button" disabled>
-              Proteger los marcados
+              <span data-i18n="protectSelected">Protect checked items</span>
               <span aria-hidden="true">→</span>
             </button>
           </div>
@@ -145,42 +153,41 @@
       <section class="result-section" id="resultSection" aria-labelledby="resultTitle" hidden>
         <div class="result-heading">
           <div>
-            <p class="step-label"><span>3</span> TEXTO PROTEGIDO</p>
-            <h2 id="resultTitle">Revísalo antes de copiar</h2>
+            <p class="step-label"><span>3</span> <span data-i18n="stepResult">PROTECTED TEXT</span></p>
+            <h2 id="resultTitle" data-i18n="resultTitle">Review before copying</h2>
           </div>
           <span class="protected-badge">
-            <span aria-hidden="true">✓</span> Cambios aplicados
+            <span aria-hidden="true">✓</span> <span data-i18n="changesApplied">Changes applied</span>
           </span>
         </div>
-        <label class="sr-only" for="protectedText">Texto con los datos reemplazados</label>
+        <label class="sr-only" for="protectedText" data-i18n="protectedTextLabel">Text with sensitive data replaced</label>
         <textarea id="protectedText" class="text-input result-input" rows="7" readonly></textarea>
         <div class="result-footer">
           <p id="replacementSummary"></p>
           <button class="primary-button copy-button" id="copyButton" type="button">
-            Copiar texto
+            <span data-i18n="copyButton">Copy text</span>
             <span aria-hidden="true">↗</span>
           </button>
         </div>
       </section>
 
       <div class="page-message" id="pageMessage" role="status" aria-live="polite"></div>
-      <p class="disclaimer">
-        Ningún detector encuentra todo. Comprueba el texto y la política del
-        servicio al que lo enviarás.
+      <p class="disclaimer" data-i18n="disclaimer">
+        No detector finds everything. Check the text and the privacy policy of the service you will send it to.
       </p>
     </main>
 
     <dialog class="confirm-dialog" id="clearDialog" aria-labelledby="clearDialogTitle">
       <div class="dialog-content">
-        <p class="eyebrow">Borrar contenido</p>
-        <h2 id="clearDialogTitle">¿Borrar el texto y los hallazgos?</h2>
-        <p>Esta acción elimina el texto de esta página y no se puede deshacer.</p>
+        <p class="eyebrow" data-i18n="clearDialogEyebrow">Clear content</p>
+        <h2 id="clearDialogTitle" data-i18n="clearDialogTitle">Clear the text and findings?</h2>
+        <p data-i18n="clearDialogDescription">This removes the text from this page and cannot be undone.</p>
         <div class="dialog-actions">
           <button class="secondary-button" id="cancelClearButton" type="button">
-            Seguir revisando
+            <span data-i18n="cancelClear">Keep reviewing</span>
           </button>
           <button class="danger-button" id="confirmClearButton" type="button">
-            Sí, borrar todo
+            <span data-i18n="confirmClear">Yes, clear everything</span>
           </button>
         </div>
       </div>
@@ -188,11 +195,11 @@
 
     <footer class="site-footer">
       <span>Antes de enviar</span>
-      <span>Una herramienta de apoyo, no una garantía de anonimización.</span>
+      <span data-i18n="footerDisclaimer">A support tool, not a guarantee of anonymization.</span>
     </footer>
 
     <noscript>
-      <p class="noscript-message">Activa JavaScript para revisar y proteger el texto en esta página.</p>
+      <p class="noscript-message" data-i18n="noscript">Enable JavaScript to review and protect text on this page.</p>
     </noscript>
   </body>
 </html>

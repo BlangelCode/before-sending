@@ -1,90 +1,106 @@
 # Antes de enviar
 
-**Antes de enviar** es una aplicación web para revisar posibles datos sensibles antes de compartir texto con herramientas de inteligencia artificial, enviarlo a una empresa o publicarlo en redes sociales. El análisis se ejecuta en el navegador; el texto no se envía al backend ni a una API de IA.
+**Antes de enviar** is a lightweight web app that helps people review and replace potentially sensitive information before sharing text with AI tools, a company, or social media. Detection runs locally in the browser; text is not sent to a backend or an AI API.
 
-> **Estado:** MVP frontend de una sola página. La detección es orientativa y no garantiza anonimización completa.
+> **Status:** Single-page PWA MVP. Detection is heuristic and does not guarantee complete anonymization.
 
-## Problema y objetivo
+## Problem and goal
 
-Al pedirle ayuda a una IA, enviar un mensaje o publicar en redes, una persona puede incluir accidentalmente datos propios o de terceros. Antes de enviar muestra tipos de posibles datos sensibles y permite reemplazarlos antes de copiar el texto protegido.
+People can accidentally include their own or someone else's personal information in a prompt, message, or social media post. Antes de enviar highlights possible sensitive values and lets users replace selected occurrences before copying the protected text.
 
-El proyecto se plantea como una herramienta educativa de privacidad, no como una garantía de anonimización.
+The project is an educational privacy aid, not a guarantee of anonymization.
 
-## Funcionalidades del MVP
+## MVP features
 
-- Escribir o pegar texto, o cargar un ejemplo ficticio de 201 caracteres para probar varias categorías.
-- Revisar categorías en pestañas con conteos; se muestra un solo panel a la vez y la lista tiene desplazamiento propio.
-- Recorrer pestañas con flechas izquierda/derecha, Inicio y Fin; al cambiar de categoría se conservan etiquetas y apariciones desmarcadas.
-- Agrupar los hallazgos por categoría y por valor, sin distinguir mayúsculas/minúsculas; cada valor distinto tiene su propia etiqueta.
-- Mostrar por separado las apariciones de un valor, permitir excluir cada aparición y saltar desde ella a su ubicación seleccionada en el texto original.
-- Reconocer cédulas venezolanas con prefijos `V-`/`E-` y otros números de identificación junto a etiquetas como “DNI”, “CI” o “documento de identidad”, incluso en frases como “mi cédula es 12345678”.
-- Reconocer pasaportes y RIF solo junto a su etiqueta; detectar teléfonos internacionales o junto a términos como “teléfono”, “número de teléfono”, “celular” y “móvil”.
-- Detectar correos, cuentas bancarias, números de tarjetas de pago y códigos de seguridad (CVV/CVC) mediante contexto.
-- Detectar tickets de soporte y códigos de planilla solo junto a sus términos contextuales. No detectar números de operación bancaria ni códigos de aula aislados.
-- Detectar direcciones IP IPv4 completas por separado de las direcciones postales; estas últimas se buscan a partir de indicadores como “calle”, “avenida”, “urbanización” o “domicilio”.
-- Seleccionar manualmente un fragmento; la herramienta propone sus coincidencias repetidas ignorando mayúsculas/minúsculas y permite excluirlas individualmente.
-- Elegir una etiqueta predefinida o personalizada por cada valor distinto y aplicarla a sus apariciones marcadas. Las etiquetas predeterminadas llevan un índice (`[CÉDULA_1]`, `[CÉDULA_2]`) para distinguir valores diferentes.
-- Revisar y desmarcar las apariciones que se quieran conservar.
-- Reemplazar los fragmentos seleccionados con etiquetas como `[CORREO_1]`, `[TELÉFONO_1]` y `[DATO_1]`.
-- Revisar y copiar el resultado protegido, o limpiar el texto y los hallazgos de la página.
-- Instalar la PWA y abrir su estructura estática sin conexión en navegadores compatibles.
+- Type or paste text, or load a synthetic example covering several categories.
+- Review detected categories in tabs with counts. Only one category panel is shown at a time, and its list scrolls independently.
+- Navigate tabs with the arrow keys, Home, and End. Labels and per-occurrence selections stay in memory when switching tabs.
+- Group findings by category and equivalent value, ignoring letter case; each distinct value has its own replacement label.
+- Review individual occurrences, exclude selected occurrences, and jump from a finding to its selected range in the original text.
+- Detect Venezuelan ID numbers with `V-`/`E-` prefixes and other ID numbers near labels such as “DNI”, “CI”, or “identity document”.
+- Detect full names with initial capitals when they follow explicit name phrases, certain roles (such as “legal representative” or “applicant”), or professional titles (such as “Lic.”). This is contextual and heuristic; it will not find every name.
+- Detect passports and tax IDs only near their labels; detect international phone numbers or local numbers near terms such as “phone”, “telephone”, “cell”, or “mobile”.
+- Detect email addresses, bank accounts, payment card numbers, and security codes using format and context rules.
+- Detect support tickets and form codes only when accompanied by their contextual terms. Do not classify isolated bank transaction numbers or classroom codes.
+- Detect valid IPv4 addresses separately from postal addresses. Postal addresses are approximated from nearby indicators such as “street”, “avenue”, or “home address”.
+- Select a text fragment manually; the app can suggest repeated matches regardless of letter case and lets users exclude occurrences individually.
+- Choose a preset or custom replacement for each distinct value. Default labels include an index (for example, `[ID_1]` and `[ID_2]`) to distinguish values.
+- Review and uncheck findings to keep them, then inspect and copy the protected text.
+- Clear the editor and findings from the page, or install the PWA in a compatible browser.
 
-La interfaz presenta los resultados como posibles datos sensibles. Los patrones contextuales pueden pasar por alto valores o producir falsos positivos; la persona debe revisar el texto protegido antes de compartirlo.
+Patterns may miss sensitive values or produce false positives. Users should always review the protected text before sharing it.
 
-## Tecnologías y por qué
+## Technology choices
 
-| Tecnología | Uso previsto |
+| Technology | Purpose |
 | --- | --- |
-| HTML | Estructura semántica y accesible de la interfaz. |
-| CSS | Presentación adaptable a móvil y escritorio, sin imponer un framework visual. |
-| JavaScript nativo | Interacciones, selección de fragmentos, reglas de detección y sustitución local. |
-| Python + FastAPI | Backend planeado para futuras operaciones no sensibles. No forma parte del MVP y no recibe texto. |
-| Manifiesto y service worker | Describir la PWA y cachear únicamente los recursos estáticos para que la interfaz pueda abrirse sin conexión. |
+| HTML | Semantic and accessible interface structure. |
+| CSS | Responsive styling without a visual framework. |
+| Classic JavaScript scripts | Local interactions, detection rules, selection, replacement, and translations. Ordered scripts and a shared namespace allow the app to run when `index.html` is opened directly with `file://`; no frontend packages or build step are required. |
+| Web manifest and service worker | Describe the PWA and cache static application resources for offline launch. User text is never cached. |
+| Python and FastAPI | Planned for possible future non-sensitive features. They are not part of this MVP and do not receive text. |
 
-Se elige HTML, CSS y JavaScript nativo en vez de añadir un framework de frontend para mantener el MVP ligero y reducir dependencias. HTML y CSS por sí solos no pueden realizar el análisis interactivo; JavaScript es necesario para leer el texto en la página, detectar patrones y aplicar cambios.
+HTML and CSS alone cannot perform interactive analysis; JavaScript reads text in the page, applies detection rules, and replaces selected ranges. Classic scripts are loaded in dependency order and share a small global namespace so local ES module restrictions do not block direct `file://` use.
 
-## Arquitectura
+## Architecture
 
 ```text
-Navegador
+Browser
   ├─ frontend/
   │   ├─ index.html
-  │   ├─ css/styles.css
-  │   ├─ js/app.js
+  │   ├─ css/                  # Base, layout, editor, findings, feedback, responsive, and theme styles
+  │   ├─ js/
+  │   │   ├─ app.js            # UI events and in-memory session state
+  │   │   ├─ config.js         # Category labels and sample text
+  │   │   ├─ detection.js      # Local contextual patterns and candidate ranges
+  │   │   ├─ findings-view.js  # Category tabs and finding controls
+  │   │   └─ translations.js   # English/Spanish strings and UI preferences
   │   ├─ manifest.webmanifest
   │   ├─ service-worker.js
   │   └─ assets/icon.svg
-  └─ Analiza y transforma el texto localmente
+  └─ Analyzes and transforms text locally
 
-Servidor estático HTTPS
-  └─ Entrega los archivos de la PWA; no recibe el texto del editor
+Static HTTPS host
+  └─ Serves the PWA files; it does not receive editor text
 
 FastAPI
-  └─ Planeado, pero no utilizado por el MVP
+  └─ Planned only; not implemented or used by the MVP
 ```
 
-El texto, los hallazgos y los reemplazos se procesan en memoria en la página. El frontend no realiza peticiones para analizar el texto ni persiste un historial. El service worker guarda recursos de la aplicación, no el contenido del editor. FastAPI permanece sin implementar y no hay base de datos ni cuentas.
+Text, findings, and replacement settings remain in page memory. The frontend does not send text for analysis or persist a history. The service worker caches static application files only. There is no database, account system, or backend in the MVP.
 
-## Detección local y límites
+## Local detection and limitations
 
-La detección automática se basa en patrones y palabras de contexto en JavaScript; no usa un modelo de IA. Un número suelto no basta para reconocer cédula, RIF, pasaporte, cuenta, tarjeta, código de seguridad, ticket o planilla. La detección de teléfonos locales requiere contexto. Las etiquetas y formatos varían por país, por lo que las reglas no cubren todos los documentos. Las direcciones postales se extraen de manera heurística desde un indicador postal hasta un límite cercano; deben revisarse. Las direcciones IP se validan y se reconocen por separado. Todo resultado es una sugerencia.
+Automatic detection uses JavaScript patterns and contextual phrases; it does not use an AI model or external AI API. Full names are detected only when they follow supported contextual phrases, role words, or professional titles and match the expected capitalization pattern. Names without a supported cue, or written in a different format, may be missed; select those manually.
 
-La aplicación debe indicar con claridad que:
+An isolated number is not enough to classify an ID, tax ID, passport, bank account, payment card, security code, support ticket, or form code. Local phone numbers require context. Formats and labels vary by country, so the rules are not exhaustive. Postal address boundaries are heuristic and should be checked. IPv4 addresses are validated and handled separately.
 
-- puede pasar por alto datos sensibles o marcar texto que no lo sea;
-- una revisión manual sigue siendo necesaria;
-- cada persona debe comprobar el texto protegido antes de compartirlo;
-- el producto no reemplaza la política de privacidad del servicio de IA utilizado.
+The app should make clear that:
 
-## Estructura inicial
+- it can miss sensitive data or flag harmless text;
+- a manual review is still necessary;
+- users must check the protected text before sharing it;
+- the product does not replace the privacy policy of the AI service being used.
+
+## Project structure
 
 ```text
 frontend/
   index.html
   css/
-    styles.css
+    foundation.css
+    layout.css
+    editor.css
+    findings.css
+    feedback.css
+    responsive.css
+    theme.css
   js/
     app.js
+    config.js
+    detection.js
+    findings-view.js
+    translations.js
   manifest.webmanifest
   service-worker.js
   assets/
@@ -100,34 +116,38 @@ evohacks-2-copilot/
     memory.md
 ```
 
-`backend/app/main.py` y `backend/requirements.txt` se mantienen vacíos: el MVP no necesita servidor para procesar texto.
+`backend/app/main.py` and `backend/requirements.txt` remain empty. The MVP does not need a server to process text.
 
-## Empaquetado y ejecución previstos
+## Run and package
 
-La PWA se puede probar con un servidor estático local y desplegar como sitio HTTPS para que otras personas la abran mediante un enlace. En Windows, desde PowerShell:
+For the core review, detection, replacement, language, and theme features, open `frontend/index.html` directly in a modern browser. This `file://` mode does not support service-worker caching or PWA installation.
+
+To run the PWA locally with service-worker/offline support, serve the static frontend with Python. In PowerShell:
 
 ```powershell
 Set-Location frontend
 python -m http.server 8000
 ```
 
-Abre `http://localhost:8000`. Para instalar la PWA desde un sitio publicado se necesita HTTPS y un navegador compatible. El service worker cachea el shell estático, no el texto escrito.
+Open `http://localhost:8000`. Publishing the app as an installable PWA requires HTTPS and a compatible browser. The service worker caches the application shell and scripts, never the text entered by the user.
 
-## Privacidad y seguridad del producto
+The interface defaults to English and offers English/Spanish and light/dark controls. Only these preferences are stored locally; text, findings, and replacement results stay in page memory and are not persisted.
 
-- No integrar una API externa de IA para leer el texto.
-- El frontend no envía texto ni hallazgos a FastAPI; el backend no participa en el MVP.
-- No guardar el texto en almacenamiento local ni crear historial.
-- La acción «Limpiar» borra el contenido del editor, la lista de hallazgos y el resultado de la página.
-- No prometer detección exhaustiva ni protección absoluta; revisar el resultado antes de compartirlo.
+## Product privacy and security
 
-## Posibles mejoras futuras
+- Do not integrate an external AI API to inspect text.
+- The frontend does not send text or findings to FastAPI; the backend is not part of the MVP.
+- Do not store editor text in local storage or create a history.
+- The “Clear text” action removes the editor text, findings, and result from the page.
+- Do not promise exhaustive detection or absolute protection; review the output before sharing it.
 
-- Perfiles regionales para patrones de identificación y teléfono, probados con datos ficticios de cada país.
-- Detección local de contraseñas y claves de API, siempre con confirmación manual y sin almacenar valores.
-- Deshacer o restaurar reemplazos durante la sesión, borrando el mapa temporal al limpiar.
-- Importar documentos de texto; el soporte de PDF, documentos ofimáticos e imágenes requeriría evaluar cuidadosamente privacidad, tamaño y OCR offline.
+## Possible future improvements
 
-## Contexto de la hackatón
+- Regional profiles for identity and phone formats, tested with synthetic examples from each country.
+- Local detection for passwords and API keys, with explicit confirmation and without storing values.
+- Undo or restore replacements during the current session, clearing the temporary mapping on reset.
+- Text-document import. PDF, office documents, and image support would require careful review of privacy, file size, and offline OCR.
 
-El proyecto se alinea con el tema **Projects for Social Good** al promover un uso más consciente y privado de herramientas de IA. Para la entrega se deberá distinguir el trabajo realizado durante el evento, explicar las decisiones técnicas y acreditar los recursos externos que se incorporen.
+## Hackathon context
+
+The project aligns with **Projects for Social Good** by promoting more privacy-conscious use of AI tools. The final submission should distinguish work completed during the event, explain technical decisions, and credit any external resources used.

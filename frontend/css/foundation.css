@@ -1,0 +1,52 @@
+/* Variables, reinicio y valores globales del documento. */
+
+:root {
+  color-scheme: light;
+  --ink: #2b2135;
+  --muted: #6f6578;
+  --soft-muted: #8a8191;
+  --paper: #f8f6fb;
+  --surface: #ffffff;
+  --line: #e9e3f0;
+  --purple: #7542a5;
+  --purple-dark: #44206d;
+  --purple-soft: #f1eafb;
+  --amber: #a45b16;
+  --amber-soft: #fff3df;
+  --shadow: 0 14px 40px rgb(35 18 53 / 7%);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 12% 0%, rgb(233 222 246 / 62%), transparent 34rem),
+    var(--paper);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #9b75c7;
+  outline-offset: 3px;
+}

@@ -2,11 +2,17 @@
 
 - Producto: herramienta web de privacidad antes de compartir textos con IA, empresas o redes sociales.
 - Público: estudiantes, trabajadores y público general; útil desde distintos países.
-- Frontend: HTML, CSS y JavaScript nativo; aplicación de una sola página.
+- Frontend: HTML, CSS y JavaScript clásico; aplicación de una sola página, sin bundler y compatible con abrir `frontend/index.html` usando `file://`.
+- Los scripts clásicos se cargan en orden y comparten `window.AntesDeEnviar`; no usar módulos ES para mantener compatibilidad con `file://`.
+- JavaScript dividido en `translations.js`, `config.js`, `detection.js`, `findings-view.js` y `app.js`; CSS incluye hojas base, layout, editor, hallazgos, feedback, responsive y `theme.css`.
+- Idioma inicial inglés, con alternancia inglés/español; tema inicial claro, con alternancia claro/oscuro.
+- Guardar únicamente idioma y tema bajo `antes-de-enviar.ui-preferences.v1`; nunca persistir texto, hallazgos ni resultado.
+- `README.md` en inglés; interfaz localizable en inglés/español.
 - El demo de «Probar ejemplo» es sintético, cubre varias categorías y no excede 300 caracteres.
 - Las categorías aparecen en pestañas con conteo; se abre la primera con hallazgos y se conserva el estado al cambiar de pestaña.
 - El frontend agrupa hallazgos por categoría y texto (ignora mayúsculas); cada valor distinto tiene etiqueta y casillas por aparición.
-- Categorías locales: cédula, pasaporte, RIF, teléfono, correo, cuenta, tarjeta, código de seguridad, ticket, planilla, IP, dirección postal y manual.
+- Categorías locales: cédula, nombre completo contextual, pasaporte, RIF, teléfono, correo, cuenta, tarjeta, código de seguridad, ticket, planilla, IP, dirección postal y manual.
+- Nombres completos: detección heurística con mayúsculas iniciales junto a frases como «me llamo», «mi nombre completo es», roles como «representante legal»/«aspirante» o títulos como «Lic.»; no se detectan de forma general sin contexto.
 - Cédulas: prefijo venezolano V-/E- o contexto de identidad (incluye «cédula es 12345678»); otros países no se reconocen exhaustivamente.
 - Teléfonos: prefijo internacional +/00 o contexto telefónico (también “número de teléfono”); nunca clasificar números aislados como teléfonos.
 - RIF/pasaporte/cuenta/tarjeta/CVV/ticket/planilla se reconocen solo junto a etiquetas contextuales.
@@ -14,12 +20,15 @@
 - Códigos de seguridad no se clasifican como documentos; códigos de planilla y tickets se detectan por su contexto.
 - Direcciones postales e IP tienen categorías separadas; las direcciones postales son heurísticas.
 - La selección manual agrupa coincidencias ignorando mayúsculas; cada aparición puede excluirse o llevar al texto original.
+- Los hallazgos automáticos pueden desmarcarse para conservarlos o quitarse del listado; al quitarlos, el fragmento queda seleccionado para poder añadirlo como selección manual.
 - Una etiqueta predeterminada o personalizada por valor se aplica a sus apariciones marcadas; las predeterminadas llevan índice para distinguir valores diferentes.
 - Hallazgos revisables; el usuario debe verificar el resultado.
 - Tema visual morado; indicador de privacidad superior no interactivo.
 - Confirmar antes de borrar texto y hallazgos.
 - No se utiliza API externa de IA; el frontend no envía ni persiste el texto.
 - El service worker cachea recursos estáticos, nunca el contenido del editor.
+- El service worker precarga todos los scripts JS, hojas CSS y traducciones; versión actual `v10`.
+- El modo `file://` permite las funciones principales, pero instalación PWA y service worker requieren HTTP/HTTPS.
 - FastAPI queda pospuesto y no recibe ni almacena textos.
 - Sin cuentas, base de datos ni historial en el MVP.
 - PWA por enlace HTTPS, con opción de instalación en navegadores compatibles.

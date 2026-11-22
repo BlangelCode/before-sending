@@ -1,0 +1,179 @@
+/* Acciones manuales, resultado, mensajes y di?logo. */
+
+.manual-note {
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid #ebe5f0;
+}
+
+.manual-note p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.secondary-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #ded0eb;
+  background: #faf7fd;
+  color: #65408c;
+}
+
+.secondary-button:hover:not(:disabled) {
+  border-color: #a882c8;
+  background: #f3ecfa;
+}
+
+.protect-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.result-section {
+  margin-top: 18px;
+  padding: 22px;
+}
+
+.protected-badge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: var(--purple-soft);
+  color: #65408c;
+  white-space: nowrap;
+}
+
+.protected-badge span {
+  font-size: 14px;
+}
+
+.result-input {
+  min-height: 150px;
+  background: #faf7fd;
+}
+
+.result-footer {
+  margin-top: 12px;
+}
+
+.result-footer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.copy-button {
+  flex: 0 0 auto;
+}
+
+.page-message {
+  min-height: 24px;
+  margin: 12px 0 0;
+  color: #614184;
+  font-size: 12px;
+  text-align: center;
+}
+
+.page-message[data-kind="warning"] {
+  color: #8a541d;
+}
+
+.disclaimer {
+  margin: 14px 0 0;
+  color: #7c8881;
+  font-size: 11px;
+  text-align: center;
+}
+
+.site-footer {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 clamp(20px, 5vw, 72px);
+  border-top: 1px solid rgb(68 32 109 / 10%);
+  color: #756a7e;
+  font-size: 10px;
+}
+
+.site-footer span:first-child {
+  color: #5e3b80;
+  font-weight: 750;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.noscript-message {
+  margin: 0;
+  padding: 12px;
+  background: #fff3df;
+  color: #713e12;
+  text-align: center;
+}
+
+.confirm-dialog {
+  width: min(440px, calc(100% - 32px));
+  padding: 0;
+  border: 1px solid #e1d6eb;
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 24px 70px rgb(35 18 53 / 24%);
+}
+
+.confirm-dialog::backdrop {
+  background: rgb(32 21 43 / 48%);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-content {
+  padding: 24px;
+}
+
+.dialog-content h2 {
+  margin: 8px 0;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+
+.dialog-content > p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.danger-button {
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid #7d315a;
+  border-radius: 8px;
+  background: #7d315a;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.danger-button:hover {
+  background: #682448;
+}
+
+[hidden] {
+  display: none !important;
+}
