@@ -1,8 +1,12 @@
 # Before Sending
 
+https://blangelcode.github.io/before-sending/
+
 **Before Sending** is a lightweight web app that helps people review and replace potentially sensitive information before sharing text with AI tools, a company, or social media. Detection runs locally in the browser; editor text is never sent to an external service.
 
 > **Version 1.0.0 — First stable release.** Before Sending is a single-page PWA. Detection is heuristic and does not guarantee complete anonymization.
+
+https://blangelcode.github.io/before-sending/
 
 ## Problem and goal
 
