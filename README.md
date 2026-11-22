@@ -12,15 +12,24 @@ El proyecto se plantea como una herramienta educativa de privacidad, no como una
 
 ## Funcionalidades del MVP
 
-- Escribir o pegar texto, o cargar un ejemplo ficticio para probar la aplicación.
-- Detectar posibles correos electrónicos y números de teléfono con reglas locales de JavaScript.
-- Seleccionar manualmente otro fragmento dentro del texto y añadirlo como posible dato sensible.
-- Revisar y desmarcar los hallazgos que se quieran conservar.
-- Reemplazar los fragmentos seleccionados con etiquetas como `[CORREO_1]`, `[TELEFONO_1]` y `[DATO_1]`.
+- Escribir o pegar texto, o cargar un ejemplo ficticio de 201 caracteres para probar varias categorías.
+- Revisar categorías en pestañas con conteos; se muestra un solo panel a la vez y la lista tiene desplazamiento propio.
+- Recorrer pestañas con flechas izquierda/derecha, Inicio y Fin; al cambiar de categoría se conservan etiquetas y apariciones desmarcadas.
+- Agrupar los hallazgos por categoría y por valor, sin distinguir mayúsculas/minúsculas; cada valor distinto tiene su propia etiqueta.
+- Mostrar por separado las apariciones de un valor, permitir excluir cada aparición y saltar desde ella a su ubicación seleccionada en el texto original.
+- Reconocer cédulas venezolanas con prefijos `V-`/`E-` y otros números de identificación junto a etiquetas como “DNI”, “CI” o “documento de identidad”, incluso en frases como “mi cédula es 12345678”.
+- Reconocer pasaportes y RIF solo junto a su etiqueta; detectar teléfonos internacionales o junto a términos como “teléfono”, “número de teléfono”, “celular” y “móvil”.
+- Detectar correos, cuentas bancarias, números de tarjetas de pago y códigos de seguridad (CVV/CVC) mediante contexto.
+- Detectar tickets de soporte y códigos de planilla solo junto a sus términos contextuales. No detectar números de operación bancaria ni códigos de aula aislados.
+- Detectar direcciones IP IPv4 completas por separado de las direcciones postales; estas últimas se buscan a partir de indicadores como “calle”, “avenida”, “urbanización” o “domicilio”.
+- Seleccionar manualmente un fragmento; la herramienta propone sus coincidencias repetidas ignorando mayúsculas/minúsculas y permite excluirlas individualmente.
+- Elegir una etiqueta predefinida o personalizada por cada valor distinto y aplicarla a sus apariciones marcadas. Las etiquetas predeterminadas llevan un índice (`[CÉDULA_1]`, `[CÉDULA_2]`) para distinguir valores diferentes.
+- Revisar y desmarcar las apariciones que se quieran conservar.
+- Reemplazar los fragmentos seleccionados con etiquetas como `[CORREO_1]`, `[TELÉFONO_1]` y `[DATO_1]`.
 - Revisar y copiar el resultado protegido, o limpiar el texto y los hallazgos de la página.
 - Instalar la PWA y abrir su estructura estática sin conexión en navegadores compatibles.
 
-La interfaz presenta los resultados como posibles datos sensibles. Las reglas pueden pasar por alto valores o marcar números que no sean teléfonos; la persona debe revisar el resultado antes de compartirlo.
+La interfaz presenta los resultados como posibles datos sensibles. Los patrones contextuales pueden pasar por alto valores o producir falsos positivos; la persona debe revisar el texto protegido antes de compartirlo.
 
 ## Tecnologías y por qué
 
@@ -58,7 +67,7 @@ El texto, los hallazgos y los reemplazos se procesan en memoria en la página. E
 
 ## Detección local y límites
 
-La detección automática implementada utiliza patrones de JavaScript para correos electrónicos y posibles teléfonos; no usa un modelo de IA. Otros fragmentos se pueden seleccionar manualmente. Los números de teléfono pueden confundirse con fechas o identificadores, y otros formatos internacionales pueden no detectarse. Nombres, direcciones e identificadores no se identifican automáticamente.
+La detección automática se basa en patrones y palabras de contexto en JavaScript; no usa un modelo de IA. Un número suelto no basta para reconocer cédula, RIF, pasaporte, cuenta, tarjeta, código de seguridad, ticket o planilla. La detección de teléfonos locales requiere contexto. Las etiquetas y formatos varían por país, por lo que las reglas no cubren todos los documentos. Las direcciones postales se extraen de manera heurística desde un indicador postal hasta un límite cercano; deben revisarse. Las direcciones IP se validan y se reconocen por separado. Todo resultado es una sugerencia.
 
 La aplicación debe indicar con claridad que:
 
@@ -111,6 +120,13 @@ Abre `http://localhost:8000`. Para instalar la PWA desde un sitio publicado se n
 - No guardar el texto en almacenamiento local ni crear historial.
 - La acción «Limpiar» borra el contenido del editor, la lista de hallazgos y el resultado de la página.
 - No prometer detección exhaustiva ni protección absoluta; revisar el resultado antes de compartirlo.
+
+## Posibles mejoras futuras
+
+- Perfiles regionales para patrones de identificación y teléfono, probados con datos ficticios de cada país.
+- Detección local de contraseñas y claves de API, siempre con confirmación manual y sin almacenar valores.
+- Deshacer o restaurar reemplazos durante la sesión, borrando el mapa temporal al limpiar.
+- Importar documentos de texto; el soporte de PDF, documentos ofimáticos e imágenes requeriría evaluar cuidadosamente privacidad, tamaño y OCR offline.
 
 ## Contexto de la hackatón
 

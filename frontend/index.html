@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#153d3a">
+    <meta name="theme-color" content="#44206d">
     <meta
       name="description"
       content="Revisa y protege posibles datos sensibles antes de compartir un texto."
@@ -15,6 +15,7 @@
     <script src="./js/app.js" defer></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
     <header class="site-header">
       <a class="brand" href="./" aria-label="Antes de enviar, inicio">
         <span class="brand-mark" aria-hidden="true">
@@ -25,13 +26,16 @@
         </span>
         <span>Antes de enviar</span>
       </a>
-      <span class="local-badge">
-        <span class="status-dot" aria-hidden="true"></span>
-        Análisis en este dispositivo
+      <span class="privacy-status" role="status">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3 19 6v5.5c0 4.5-2.8 7.8-7 9.5-4.2-1.7-7-5-7-9.5V6l7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span><strong>Privacidad local</strong><small>El texto se analiza aquí</small></span>
       </span>
     </header>
 
-    <main class="page-shell">
+    <main class="page-shell" id="main-content" tabindex="-1">
       <section class="intro" aria-labelledby="page-title">
         <p class="eyebrow">Una pausa antes de compartir</p>
         <h1 id="page-title">Tu texto. <span>Tu decisión.</span></h1>
@@ -65,16 +69,18 @@
           <label class="sr-only" for="sourceText">Texto que quieres revisar</label>
           <textarea
             id="sourceText"
+            name="sourceText"
             class="text-input"
             rows="11"
-            placeholder="Pega o escribe aquí el texto que quieres revisar..."
+            autocomplete="off"
+            placeholder="Ejemplo: «Mi correo es ana@ejemplo.com…»"
             spellcheck="false"
           ></textarea>
 
           <div class="editor-footer">
             <span id="characterCount">0 caracteres</span>
             <button class="text-button clear-button" id="clearButton" type="button">
-              Limpiar
+              Borrar texto
             </button>
           </div>
 
@@ -83,7 +89,7 @@
               Revisar texto
               <span aria-hidden="true">→</span>
             </button>
-            <p>Detecta correos y posibles números de teléfono.</p>
+            <p>Busca identificaciones, teléfonos, correos, datos financieros y direcciones.</p>
           </div>
         </article>
 
@@ -111,7 +117,14 @@
             <p class="empty-title">Aquí aparecerán los hallazgos</p>
             <p>Revisa un texto para empezar.</p>
           </div>
-          <ul class="finding-list" id="findingList" aria-label="Hallazgos detectados"></ul>
+          <div
+            class="category-tabs"
+            id="categoryTabs"
+            role="tablist"
+            aria-label="Categorías de datos detectados"
+            hidden
+          ></div>
+          <div class="finding-groups" id="findingGroups" aria-label="Hallazgos agrupados por tipo"></div>
 
           <div class="manual-note">
             <p>
@@ -156,6 +169,22 @@
         servicio al que lo enviarás.
       </p>
     </main>
+
+    <dialog class="confirm-dialog" id="clearDialog" aria-labelledby="clearDialogTitle">
+      <div class="dialog-content">
+        <p class="eyebrow">Borrar contenido</p>
+        <h2 id="clearDialogTitle">¿Borrar el texto y los hallazgos?</h2>
+        <p>Esta acción elimina el texto de esta página y no se puede deshacer.</p>
+        <div class="dialog-actions">
+          <button class="secondary-button" id="cancelClearButton" type="button">
+            Seguir revisando
+          </button>
+          <button class="danger-button" id="confirmClearButton" type="button">
+            Sí, borrar todo
+          </button>
+        </div>
+      </div>
+    </dialog>
 
     <footer class="site-footer">
       <span>Antes de enviar</span>

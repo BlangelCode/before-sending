@@ -3,8 +3,21 @@
 - Producto: herramienta web de privacidad antes de compartir textos con IA, empresas o redes sociales.
 - Público: estudiantes, trabajadores y público general; útil desde distintos países.
 - Frontend: HTML, CSS y JavaScript nativo; aplicación de una sola página.
-- El MVP detecta correos y posibles teléfonos en el navegador; permite añadir manualmente otras selecciones.
-- Hallazgos revisables y reemplazos etiquetados; el usuario debe verificar el resultado.
+- El demo de «Probar ejemplo» es sintético, cubre varias categorías y no excede 300 caracteres.
+- Las categorías aparecen en pestañas con conteo; se abre la primera con hallazgos y se conserva el estado al cambiar de pestaña.
+- El frontend agrupa hallazgos por categoría y texto (ignora mayúsculas); cada valor distinto tiene etiqueta y casillas por aparición.
+- Categorías locales: cédula, pasaporte, RIF, teléfono, correo, cuenta, tarjeta, código de seguridad, ticket, planilla, IP, dirección postal y manual.
+- Cédulas: prefijo venezolano V-/E- o contexto de identidad (incluye «cédula es 12345678»); otros países no se reconocen exhaustivamente.
+- Teléfonos: prefijo internacional +/00 o contexto telefónico (también “número de teléfono”); nunca clasificar números aislados como teléfonos.
+- RIF/pasaporte/cuenta/tarjeta/CVV/ticket/planilla se reconocen solo junto a etiquetas contextuales.
+- Cédulas V-/E- se detectan aunque sigan a «C.I.»; no excluir esos prefijos como si fueran RIF.
+- Códigos de seguridad no se clasifican como documentos; códigos de planilla y tickets se detectan por su contexto.
+- Direcciones postales e IP tienen categorías separadas; las direcciones postales son heurísticas.
+- La selección manual agrupa coincidencias ignorando mayúsculas; cada aparición puede excluirse o llevar al texto original.
+- Una etiqueta predeterminada o personalizada por valor se aplica a sus apariciones marcadas; las predeterminadas llevan índice para distinguir valores diferentes.
+- Hallazgos revisables; el usuario debe verificar el resultado.
+- Tema visual morado; indicador de privacidad superior no interactivo.
+- Confirmar antes de borrar texto y hallazgos.
 - No se utiliza API externa de IA; el frontend no envía ni persiste el texto.
 - El service worker cachea recursos estáticos, nunca el contenido del editor.
 - FastAPI queda pospuesto y no recibe ni almacena textos.
