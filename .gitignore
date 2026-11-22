@@ -1,11 +1,6 @@
 # Ignore agents and agents cache
 .github
 evohacks-2-copilot
-!evohacks-2-copilot/
-evohacks-2-copilot/*
-!evohacks-2-copilot/context/
-evohacks-2-copilot/context/*
-!evohacks-2-copilot/context/memory.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -226,3 +221,4 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 data/data.db
+evohacks-2-copilot/context/memory.md

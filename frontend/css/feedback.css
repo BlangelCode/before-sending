@@ -67,15 +67,31 @@
 }
 
 .page-message {
-  min-height: 24px;
-  margin: 12px 0 0;
+  min-height: 0;
+  margin: 0 0 12px;
   color: #614184;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 20px;
   text-align: center;
+}
+
+.page-message:not(:empty) {
+  width: fit-content;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 9px 14px;
+  border: 1px solid #dcd1e8;
+  border-radius: 10px;
+  background: #f7f2fb;
+  box-shadow: 0 6px 18px rgb(68 32 109 / 8%);
 }
 
 .page-message[data-kind="warning"] {
   color: #8a541d;
+  border-color: #e8c796;
+  background: #fff7e8;
 }
 
 .disclaimer {

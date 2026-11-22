@@ -196,10 +196,15 @@
 
 :root[data-theme="dark"] .page-message {
   color: #d7b9f1;
+  border-color: #4d405e;
+  background: #2a2233;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 18%);
 }
 
 :root[data-theme="dark"] .page-message[data-kind="warning"] {
   color: #ffd18b;
+  border-color: #80643f;
+  background: #392e21;
 }
 
 :root[data-theme="dark"] .disclaimer,

@@ -8,7 +8,7 @@
       name="description"
       content="Review and protect possible sensitive data before sharing text."
     >
-    <title>Antes de enviar</title>
+    <title>Before Sending</title>
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./css/foundation.css">
@@ -34,7 +34,7 @@
             <path d="m11.5 15.8 3 3 6-6.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        <span>Antes de enviar</span>
+        <span>Before Sending</span>
       </a>
       <div class="header-controls">
         <span class="privacy-status" role="status">
@@ -64,6 +64,8 @@
           Analysis runs on this page. Text is not sent to a server or saved in a history. Results are suggestions: review them before sharing.
         </p>
       </section>
+
+      <div class="page-message" id="pageMessage" role="status" aria-live="polite"></div>
 
       <section class="workspace" data-i18n-aria-label="workspaceAria">
         <article class="panel editor-panel">
@@ -171,7 +173,6 @@
         </div>
       </section>
 
-      <div class="page-message" id="pageMessage" role="status" aria-live="polite"></div>
       <p class="disclaimer" data-i18n="disclaimer">
         No detector finds everything. Check the text and the privacy policy of the service you will send it to.
       </p>
@@ -194,7 +195,7 @@
     </dialog>
 
     <footer class="site-footer">
-      <span>Antes de enviar</span>
+      <span>Before Sending</span>
       <span data-i18n="footerDisclaimer">A support tool, not a guarantee of anonymization.</span>
     </footer>
 

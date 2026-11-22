@@ -1,7 +1,7 @@
-// Orquesta la interacción y conserva el estado de la sesión en memoria.
+  // Orquesta la interacción y conserva el estado de la sesión en memoria.
 window.AntesDeEnviar = window.AntesDeEnviar || {};
 (function (app) {
-const { CATEGORY_CONFIG, DEMO_TEXT } = app.config;
+const { CATEGORY_CONFIG, DEMO_TEXTS } = app.config;
 const { detectFindings, normalizeFindingValue, renderFindingsView } = app;
 const { t, categoryInfo } = app.i18n;
 
@@ -31,6 +31,28 @@ let findings = [];
 let nextFindingId = 0;
 let activeCategory = null;
 const labelSettings = new Map();
+let demoOrder = [];
+let demoOrderIndex = 0;
+let lastDemoIndex = -1;
+
+function getNextDemoText() {
+  if (demoOrderIndex >= demoOrder.length) {
+    demoOrder = DEMO_TEXTS.map((_, index) => index);
+    for (let index = demoOrder.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [demoOrder[index], demoOrder[swapIndex]] = [demoOrder[swapIndex], demoOrder[index]];
+    }
+    if (demoOrder.length > 1 && demoOrder[0] === lastDemoIndex) {
+      [demoOrder[0], demoOrder[1]] = [demoOrder[1], demoOrder[0]];
+    }
+    demoOrderIndex = 0;
+  }
+
+  const demoIndex = demoOrder[demoOrderIndex];
+  demoOrderIndex += 1;
+  lastDemoIndex = demoIndex;
+  return DEMO_TEXTS[demoIndex];
+}
 
 function showMessage(message, kind = "info") {
   pageMessage.textContent = message;
@@ -346,7 +368,7 @@ confirmClearButton.addEventListener("click", () => {
 copyButton.addEventListener("click", copyProtectedText);
 
 sampleButton.addEventListener("click", () => {
-  sourceText.value = DEMO_TEXT;
+  sourceText.value = getNextDemoText();
   updateCharacterCount();
   analyzeText();
   sourceText.focus();

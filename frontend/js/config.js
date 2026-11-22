@@ -15,17 +15,18 @@ const CATEGORY_ORDER = [
   "planilla",
   "direccionIp",
   "direccion",
+  "otros",
   "manual",
 ];
 
 const CATEGORY_CONFIG = {
   cedula: {
-    title: "Cédulas",
+    title: "Identificaciones",
     icon: "ID",
-    singular: "cédula",
-    plural: "cédulas",
-    defaultLabel: "[CÉDULA]",
-    description: "Se reconoce por un prefijo V-/E- o por una etiqueta de identidad cercana.",
+    singular: "identificación",
+    plural: "identificaciones",
+    defaultLabel: "[IDENTIFICACIÓN]",
+    description: "Se reconoce por un prefijo V-/E-, una etiqueta de identidad o formatos contextuales de SSN/licencia de conducir.",
   },
   nombreCompleto: {
     title: "Nombres completos",
@@ -44,12 +45,12 @@ const CATEGORY_CONFIG = {
     description: "Se reconoce cuando un número alfanumérico aparece junto a «pasaporte».",
   },
   rif: {
-    title: "RIF",
-    icon: "RIF",
-    singular: "RIF",
-    plural: "RIF",
-    defaultLabel: "[RIF]",
-    description: "Se reconoce por el prefijo fiscal junto a «RIF».",
+    title: "Identificadores fiscales",
+    icon: "TAX",
+    singular: "identificador fiscal",
+    plural: "identificadores fiscales",
+    defaultLabel: "[ID FISCAL]",
+    description: "Se reconoce por el formato de RIF o EIN junto a su etiqueta.",
   },
   telefono: {
     title: "Teléfonos",
@@ -57,7 +58,7 @@ const CATEGORY_CONFIG = {
     singular: "teléfono",
     plural: "teléfonos",
     defaultLabel: "[TELÉFONO]",
-    description: "Se reconoce por un prefijo internacional o por términos como «teléfono» y «número de teléfono».",
+    description: "Se reconoce por un prefijo internacional o por términos telefónicos en español e inglés.",
   },
   correo: {
     title: "Correos electrónicos",
@@ -73,7 +74,7 @@ const CATEGORY_CONFIG = {
     singular: "cuenta bancaria",
     plural: "cuentas bancarias",
     defaultLabel: "[CUENTA BANCARIA]",
-    description: "Se reconoce junto a «cuenta bancaria» o «account number», no por números aislados.",
+    description: "Se reconoce junto a etiquetas de cuenta, número de cuenta o ruta bancaria.",
   },
   tarjeta: {
     title: "Tarjetas de pago",
@@ -81,7 +82,7 @@ const CATEGORY_CONFIG = {
     singular: "tarjeta",
     plural: "tarjetas",
     defaultLabel: "[TARJETA]",
-    description: "Se reconoce junto a «tarjeta», Visa, Mastercard u otra marca.",
+    description: "Se reconoce junto a «tarjeta», Visa, Mastercard o American Express.",
   },
   codigoSeguridad: {
     title: "Códigos de seguridad",
@@ -89,7 +90,7 @@ const CATEGORY_CONFIG = {
     singular: "código de seguridad",
     plural: "códigos de seguridad",
     defaultLabel: "[CÓDIGO]",
-    description: "Se reconoce junto a CVV, código de seguridad o código de verificación; no como documento.",
+    description: "Se reconoce junto a CVV, CVC, CID o etiquetas de código de seguridad; no como documento.",
   },
   ticket: {
     title: "Tickets de soporte",
@@ -113,7 +114,7 @@ const CATEGORY_CONFIG = {
     singular: "dirección IP",
     plural: "direcciones IP",
     defaultLabel: "[DIRECCIÓN IP]",
-    description: "Se reconoce una dirección IPv4 completa y válida.",
+    description: "Se reconocen direcciones IPv4 e IPv6 completas y válidas.",
   },
   direccion: {
     title: "Direcciones postales",
@@ -121,7 +122,15 @@ const CATEGORY_CONFIG = {
     singular: "dirección",
     plural: "direcciones",
     defaultLabel: "[DIRECCIÓN]",
-    description: "Se reconoce junto a palabras como «calle», «avenida» o «domicilio».",
+    description: "Se reconoce por indicadores postales o por formatos de calle, estado y ZIP estadounidenses.",
+  },
+  otros: {
+    title: "Otros",
+    icon: "OTR",
+    singular: "otro dato sensible",
+    plural: "otros datos sensibles",
+    defaultLabel: "[OTRO DATO]",
+    description: "Se reconoce junto a etiquetas de fecha de nacimiento, salud, seguro o referencias internas.",
   },
   manual: {
     title: "Selección manual",
@@ -133,7 +142,12 @@ const CATEGORY_CONFIG = {
   },
 };
 
-const DEMO_TEXT = "Me llamo Ana María Pérez; C.I. V-16.731.908; pasaporte A7392014; tel. 0414-5550198; ana@example.com; cuenta 0105-0072-19-3008412590; tarjeta Visa 4111-1111-1111-1111, CVV 918; ticket #883920; IP 192.168.1.10; Calle 5, Valencia.";
+const DEMO_TEXTS = [
+  "On 10/14/2026 at 07:25 AM PDT, patient Maya Chen (DOB: 02/17/1985, SSN: 123-45-6789) checked in at Example Community Clinic (NPI: 1999999999) under SampleCare Policy #TEST-104829 and Group ID 550192. She updated her mobile phone to 310-555-0142, home landline to (424) 555-0173, and primary email to maya.chen@example.com. For co-pay auto-debit, she authorized her Sample HSA debit card 4000-0000-0000-0002 (exp. 08/30, CVV 123) linked to routing number 000000000 and account 000123456789. Her current home address is 100 Example Blvd, Unit 12, Sample City, CA 90000-3812, while emergency contact Alex Rivera resides at 200 Test St, Sampletown, CA 90001. During triage, the EHR system generated encounter ID #481620735 (not an SSN), recorded ICD-10 diagnosis code Z00.00, and logged workstation IP 192.0.2.19. Please send lab results and billing statements to Dr. Taylor Example at (310) 555-0147 or taylor@example.com prior to discharge.",
+  "En fecha 04/10/2026 a las 10:25 AM, el representante legal Luis Rivera (C.I. V-12.345.678) formalizó la inscripción de la aspirante Ana Cruz (pasaporte A1234567) para el período académico 2026-2027. Registró como contacto de emergencia principal el celular +58 412-5550123 y el teléfono alterno 0412-5550124, además de los correos luis.rivera@example.com y ana.cruz@example.com. Para el pago de matrícula se verificó la transferencia desde la cuenta 0105-0000-00-3000000000, el número de operación bancaria 32140985 y el comprobante en tarjeta Mastercard 5555-5555-5555-4444 (vencimiento 03/30, código de verificación 918). El hogar familiar se ubica en la Urb. Muestra II, Calle 10, Res. Ejemplo, Piso 2, Apto 4-B, Ciudad Ejemplo, y se indicó como dirección anterior la Calle Modelo, Casa Nro. 14, Pueblo Muestra. Durante el registro administrativo se asignó el código de planilla #246810 y un cupo en aula identificado como 07C (no corresponde a cédula ni a tarjeta). El seguimiento quedó a cargo de la Lic. Carla Ejemplo, comunicable al teléfono fijo 0241-5550125 o al correo carla.ejemplo@example.com antes de finalizar la semana.",
+  "On 12/02/2026 at 03:40 PM EST, primary applicant Jordan Taylor (SSN: 123-45-6789, Driver's License D12345678) submitted a commercial lease application for Sample Logistics LLC (EIN: 12-3456789). They listed their primary mobile number as (512) 555-0142 and backup work line as +1-737-555-0198, with email addresses jordan.taylor@example.com and jtaylor@example.org. For ACH rent billing, they provided routing number 000000000 and checking account 000123456789, plus a backup American Express card 3782-822246-30005 (exp. 05/30, CID 2716). Their residential address is 100 Example Ave, Apt 4B, Sample City, TX 75000-1234, and the proposed warehouse is at 500 Test Pkwy, Suite 200, Sampletown, TX 75001. The portal generated case ID #613740285 (not an SSN) and logged access from IPv4 192.0.2.42 and IPv6 2001:0db8:85a3:0000:0000:8a2e:0370:7334. Please forward disclosures to Senior Legal Counsel Morgan Example at (212) 555-0124 or morgan@example.com before EOD.",
+  "El día 12/12/2026 a las 10:42 AM, la titular María Gómez (CI: V-20.345.119, pasaporte P1234567) solicitó actualizar su cuenta corporativa registrada bajo el RIF J-30851724-6. Indicó que su teléfono anterior (0412-5550141) fue reemplazado por el nuevo número +58 424-5550123, y cambió su correo principal de mgomez@example.com a maria.gomez@example.org. Para validar su identidad, proporcionó la cuenta bancaria 0134-0000-00-1000000000 y el código de seguridad temporal 625184 (este código no es un documento). Su domicilio fiscal se trasladó de la Calle Modelo, Edif. Muestra, Apto 3-B, Pueblo Ejemplo, hacia la Urb. Prueba, Calle 12, Quinta Demo, Ciudad Muestra. Durante la llamada, su socio comercial, el Ing. Roberto Pérez (E-12.345.678), autorizó el cargo en la tarjeta Visa 4111-1111-1111-1111 (vencimiento 07/30, CVV 742). El sistema generó el ticket de soporte #13649280 y vinculó la dirección IP 192.0.2.88. Cualquier notificación legal adicional deberá remitirse a la Dra. Carla Soto al teléfono de oficina 0241-5550120 o al correo carla.soto@example.com antes del cierre de mes.",
+];
 
-app.config = { CATEGORY_ORDER, CATEGORY_CONFIG, DEMO_TEXT };
+app.config = { CATEGORY_ORDER, CATEGORY_CONFIG, DEMO_TEXTS };
 })(window.AntesDeEnviar);

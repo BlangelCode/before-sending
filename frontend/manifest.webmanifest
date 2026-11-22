@@ -1,8 +1,8 @@
 {
-  "name": "Antes de enviar",
-  "short_name": "Antes de enviar",
-  "description": "Revisa y protege posibles datos sensibles antes de compartir un texto.",
-  "lang": "es",
+  "name": "Before Sending",
+  "short_name": "Before Sending",
+  "description": "Review and protect possible sensitive information before sharing text.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
