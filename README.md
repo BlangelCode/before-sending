@@ -6,8 +6,6 @@ https://blangelcode.github.io/before-sending/
 
 > **Version 1.0.0 — First stable release.** Before Sending is a single-page PWA. Detection is heuristic and does not guarantee complete anonymization.
 
-https://blangelcode.github.io/before-sending/
-
 ## Problem and goal
 
 People can accidentally include their own or someone else's personal information in a prompt, message, or social media post. Before Sending highlights possible sensitive values and lets users replace selected occurrences before copying the protected text.
